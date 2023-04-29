@@ -13,8 +13,8 @@ namespace RhythmsGonnaGetYou
         {
             optionsBuilder.UseNpgsql("server=localhost;database=RecordLabelDatabase");
 
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            optionsBuilder.UseLoggerFactory(loggerFactory);
+            // var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            // optionsBuilder.UseLoggerFactory(loggerFactory);
         }
     }
 }
