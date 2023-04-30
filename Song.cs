@@ -12,7 +12,7 @@ namespace RhythmsGonnaGetYou
         public Album Album { get; set; }
 
         // Add a song to an album
-        public static void AddSong()
+        public static void AddSong(RecordLabelDatabaseContext context)
         {
             // ####  ???
             // var songAlbum = RLDatabase.PromptForString("What album is this song on?");

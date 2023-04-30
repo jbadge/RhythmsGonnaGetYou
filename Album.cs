@@ -17,9 +17,8 @@ namespace RhythmsGonnaGetYou
         public List<Song> Songs { get; set; }
 
         // View all albums of band, using prompt
-        public static void ViewAllAlbumsByBand()
+        public static void ViewAllAlbumsByBand(RecordLabelDatabaseContext context)
         {
-            var context = new RecordLabelDatabaseContext();
             var band = RLDatabase.PromptForString("What band do you want to see albums for?").ToLower();
             var albumsWithBands = context.Albums.Include(album => album.Band);
 
@@ -34,11 +33,10 @@ namespace RhythmsGonnaGetYou
         }
 
         // View all albums by...(currently only) release date
-        public static void ViewAlbumsBy()
+        public static void ViewAlbumsBy(RecordLabelDatabaseContext context)
         {
             // give ability to order by ______, not just release date
             // var sortBy = RLDatabase.PromptForString("How would you like the albums sorted?").ToLower(); 
-            var context = new RecordLabelDatabaseContext();
 
             // var albumsByReleaseDate = context.Albums.Where(album => album.Band != null).OrderBy(album => album.ReleaseDate).Include(album => album.Band);
             var albumsByReleaseDate = context.Albums.Include(album => album.Band).OrderBy(album => album.ReleaseDate);
@@ -50,11 +48,57 @@ namespace RhythmsGonnaGetYou
         }
 
         // Add an album for a band
-        public static void AddAlbum()
+        public static void AddAlbum(RecordLabelDatabaseContext context)
         {
-            var albumTitle = RLDatabase.PromptForString("What is the title of the album?");
-            var albumIsExplicit = RLDatabase.PromptForString("Is the album explicit?");
-            var albumReleaseDate = RLDatabase.PromptForString("When was the album released? use mm/dd/yyyy");
+            var bandName = RLDatabase.PromptForString("What is the name of the band?");
+            var bandToAddAlbum = context.Bands.FirstOrDefault(band => band.Name.ToUpper() == bandName.ToUpper());
+
+            if (bandToAddAlbum != null)
+            {
+                var albumTitle = RLDatabase.PromptForString("What is the title of the album?");
+                var albumTitleToAdd = context.Albums.FirstOrDefault(album => album.Title.ToUpper() == albumTitle.ToUpper());
+
+                var isValidDate = false;
+                if (albumTitleToAdd == null)
+                {
+                    while (!isValidDate)
+                    {
+                        DateTime albumReleaseDate;
+
+                        if (DateTime.TryParse(RLDatabase.PromptForString("When was the album released? use mm/dd/yyyy"), out albumReleaseDate))
+                        {
+                            String.Format("MM/0:d/yyyy", albumReleaseDate);
+                            isValidDate = true;
+
+                            var newAlbum = new Album
+                            {
+                                Title = albumTitle,
+                                IsExplicit = RLDatabase.PromptForBool("Is the album explicit? (Y)es or (n)o"),
+                                ReleaseDate = albumReleaseDate,
+                                BandId = bandToAddAlbum.Id
+                            };
+
+                            context.Albums.Add(newAlbum);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid");
+                            RLDatabase.DialogueRefresher();
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Album is already in the database");
+                    RLDatabase.DialogueRefresher();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Band does not exist in the database.");
+                RLDatabase.DialogueRefresher();
+            }
         }
 
     }

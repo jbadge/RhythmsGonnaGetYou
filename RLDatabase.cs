@@ -18,7 +18,7 @@ namespace RhythmsGonnaGetYou
         }
 
         // Menus
-        public static void Menu()
+        public static void Menu(RecordLabelDatabaseContext context)
         {
             WelcomeMessage();
 
@@ -31,10 +31,10 @@ namespace RhythmsGonnaGetYou
                 switch (menuInput)
                 {
                     case 1:
-                        ViewMenu();
+                        ViewMenu(context);
                         break;
                     case 2:
-                        ManageMenu();
+                        ManageMenu(context);
                         break;
                     case 3:
                         usingMenu = false;
@@ -47,7 +47,7 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ViewMenu()
+        public static void ViewMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
@@ -58,10 +58,10 @@ namespace RhythmsGonnaGetYou
                 switch (menuInput)
                 {
                     case 1:
-                        ViewBandsMenu();
+                        ViewBandsMenu(context);
                         break;
                     case 2:
-                        ViewAlbumsMenu();
+                        ViewAlbumsMenu(context);
                         break;
                     case 3:
                         usingMenu = false;
@@ -74,7 +74,7 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ViewBandsMenu()
+        public static void ViewBandsMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
@@ -86,17 +86,17 @@ namespace RhythmsGonnaGetYou
                 {
                     case 1:
                         // View all the bands
-                        Band.ViewAllBands();
+                        Band.ViewAllBands(context);
                         DialogueRefresher();
                         break;
                     case 2:
                         // View all bands that are signed
-                        Band.ViewSignedBands();
+                        Band.ViewSignedBands(context);
                         DialogueRefresher();
                         break;
                     case 3:
                         // View all bands that are not signed
-                        Band.ViewUnsignedBands();
+                        Band.ViewUnsignedBands(context);
                         DialogueRefresher();
                         break;
                     case 4:
@@ -110,7 +110,7 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ViewAlbumsMenu()
+        public static void ViewAlbumsMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
@@ -122,12 +122,12 @@ namespace RhythmsGonnaGetYou
                 {
                     case 1:
                         // Prompt for a band name and view all their albums
-                        Album.ViewAllAlbumsByBand();
+                        Album.ViewAllAlbumsByBand(context);
                         DialogueRefresher();
                         break;
                     case 2:
                         // View all albums by...(currently only) release date
-                        Album.ViewAlbumsBy();
+                        Album.ViewAlbumsBy(context);
                         DialogueRefresher();
                         break;
                     case 3:
@@ -141,7 +141,7 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ManageMenu()
+        public static void ManageMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
@@ -152,10 +152,10 @@ namespace RhythmsGonnaGetYou
                 switch (menuInput)
                 {
                     case 1:
-                        ManageBandsMenu();
+                        ManageBandsMenu(context);
                         break;
                     case 2:
-                        ManageAlbumsMenu();
+                        ManageAlbumsMenu(context);
                         break;
                     case 3:
                         usingMenu = false;
@@ -168,31 +168,31 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ManageBandsMenu()
+        public static void ManageBandsMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("Manage Bands\n\n1. Add a new band\n2. Add an album for a band\n3. Sign a band\n4. Let a band go\n5. Back to the main menu");
+                var menuInput = HelperFunctions.PromptForInt("Manage Bands\n\n1. Add a new band\n2. Add an album for a band\n3. Re-sign a band\n4. Let a band go\n5. Back to the main menu");
 
                 switch (menuInput)
                 {
                     case 1:
                         // Add a new band
-                        Band.AddBand();
+                        Band.AddBand(context);
                         break;
                     case 2:
                         // Add an album for a band
-                        Album.AddAlbum();
+                        Album.AddAlbum(context);
                         break;
                     case 3:
                         // Resign a band (update isSigned to true)
-                        Band.ReSignBand();
+                        Band.ReSignBand(context);
                         break;
                     case 4:
                         // Let a band go (update isSigned to false)
-                        Band.DropBand();
+                        Band.DropBand(context);
                         break;
                     case 5:
                         usingMenu = false;
@@ -205,7 +205,7 @@ namespace RhythmsGonnaGetYou
             }
         }
 
-        public static void ManageAlbumsMenu()
+        public static void ManageAlbumsMenu(RecordLabelDatabaseContext context)
         {
             bool usingMenu = true;
 
@@ -217,11 +217,11 @@ namespace RhythmsGonnaGetYou
                 {
                     case 1:
                         // Add an album for a band
-                        Album.AddAlbum();
+                        Album.AddAlbum(context);
                         break;
                     case 2:
                         // Add a song to an album
-                        Song.AddSong();
+                        Song.AddSong(context);
                         break;
                     case 3:
                         usingMenu = false;
@@ -307,16 +307,6 @@ namespace RhythmsGonnaGetYou
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true).Key.ToString();
             Console.Clear();
-        }
-
-        public void Debug(int num, bool flag = false)
-        {
-            Console.WriteLine($"Debug {num}");
-            if (flag == true)
-            {
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey(true).Key.ToString();
-            }
         }
 
     }

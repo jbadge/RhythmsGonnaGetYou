@@ -9,9 +9,8 @@ namespace RhythmsGonnaGetYou
         static void Main(string[] args)
         {
             var context = new RecordLabelDatabaseContext();
-            var songsWithAlbums = context.Songs.Include(song => song.Album);
 
-            RLDatabase.Menu();
+            RLDatabase.Menu(context);
         }
     }
 }

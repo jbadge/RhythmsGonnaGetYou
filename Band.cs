@@ -1,6 +1,7 @@
 // using System
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RhythmsGonnaGetYou
 {
@@ -19,10 +20,9 @@ namespace RhythmsGonnaGetYou
         public List<Album> Albums { get; set; }
 
         // View all the bands
-        public static void ViewAllBands()
+        public static void ViewAllBands(RecordLabelDatabaseContext context)
         {
             //possibly add IsBandSigned to this function
-            var context = new RecordLabelDatabaseContext();
             var bands = context.Bands;
 
             foreach (var band in bands)
@@ -39,9 +39,8 @@ namespace RhythmsGonnaGetYou
         }
 
         // View all bands that are signed
-        public static void ViewSignedBands()
+        public static void ViewSignedBands(RecordLabelDatabaseContext context)
         {
-            var context = new RecordLabelDatabaseContext();
             var bands = context.Bands;
 
             foreach (var band in bands)
@@ -58,9 +57,8 @@ namespace RhythmsGonnaGetYou
         }
 
         // View all bands that are not signed
-        public static void ViewUnsignedBands()
+        public static void ViewUnsignedBands(RecordLabelDatabaseContext context)
         {
-            var context = new RecordLabelDatabaseContext();
             var bands = context.Bands;
 
             foreach (var band in bands)
@@ -77,47 +75,85 @@ namespace RhythmsGonnaGetYou
         }
 
         // Add a band to the database
-        public static void AddBand()
+        public static void AddBand(RecordLabelDatabaseContext context)
         {
-            var context = new RecordLabelDatabaseContext();
-
             var bandName = RLDatabase.PromptForString("What is the name of the band?");
-            var bandCountryOfOrigin = RLDatabase.PromptForString("What is the country of origin??");
-            var bandNumberOfMembers = RLDatabase.PromptForInt("Number of members?");
-            var bandWebsite = RLDatabase.PromptForString("What is the band website?");
-            var bandStyle = RLDatabase.PromptForString("What is the genre or style of music?");
-            var bandContactPerson = RLDatabase.PromptForString("Who is the contact person?");
-            var bandContactPhoneNumber = RLDatabase.PromptForString("What is the contact phone number?");
-            var bandIsSigned = RLDatabase.PromptForBool("Is the band signed? (Y)es or (n)o");
+            var bandToCheck = context.Bands.FirstOrDefault(band => band.Name.ToUpper() == bandName.ToUpper());
 
-            var newBand = new Band
+            if (bandToCheck != null)
             {
-                Name = bandName,
-                CountryOfOrigin = bandCountryOfOrigin,
-                NumberOfMembers = bandNumberOfMembers,
-                Website = bandWebsite,
-                Style = bandStyle,
-                IsSigned = bandIsSigned,
-                ContactName = bandContactPerson,
-                ContactPhoneNumber = bandContactPhoneNumber
-            };
+                Console.WriteLine($"{bandToCheck.Name} already exists in the database.");
+                RLDatabase.DialogueRefresher();
+            }
+            else
+            {
+                var newBand = new Band
+                {
+                    Name = bandName,
+                    CountryOfOrigin = RLDatabase.PromptForString("What is the country of origin?"),
+                    NumberOfMembers = RLDatabase.PromptForInt("Number of members?"),
+                    Website = RLDatabase.PromptForString("What is the band website?"),
+                    Style = RLDatabase.PromptForString("What is the genre or style of music?"),
+                    IsSigned = RLDatabase.PromptForBool("Is the band signed? (Y)es or (n)o"),
+                    ContactName = RLDatabase.PromptForString("Who is the contact person?"),
+                    ContactPhoneNumber = RLDatabase.PromptForString("What is the contact phone number?")
+                };
 
-            context.Bands.Add(newBand);
-            context.SaveChanges();
+                context.Bands.Add(newBand);
+                context.SaveChanges();
+            }
         }
 
         // Resign a band (update isSigned to true)
-        public static void ReSignBand()
+        public static void ReSignBand(RecordLabelDatabaseContext context)
         {
             var bandName = RLDatabase.PromptForString("What band would you like to re-sign?");
-            //set isSigned TRUE
+            var bandToReSign = context.Bands.FirstOrDefault(band => band.Name.ToUpper() == bandName.ToUpper());
+
+            if (bandToReSign != null)
+            {
+                if (bandToReSign.IsSigned == false)
+                {
+                    bandToReSign.IsSigned = true;
+                    context.SaveChanges();
+                    Console.WriteLine($"You successfully re-signed {bandToReSign.Name}.");
+                }
+                else
+                {
+                    Console.WriteLine($"{bandToReSign.Name} is already signed!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Band does not exist in the database.");
+            }
+            RLDatabase.DialogueRefresher();
         }
 
         // Let a band go (update isSigned to false)
-        public static void DropBand()
+        public static void DropBand(RecordLabelDatabaseContext context)
         {
             var bandName = RLDatabase.PromptForString("What band would you like to drop?");
-            //set isSigned FALSE
+            var bandToDrop = context.Bands.FirstOrDefault(band => band.Name.ToUpper() == bandName.ToUpper());
+
+            if (bandToDrop != null)
+            {
+                if (bandToDrop.IsSigned == true)
+                {
+                    bandToDrop.IsSigned = false;
+                    context.SaveChanges();
+                    Console.WriteLine($"You successfully dropped {bandToDrop.Name}.");
+                }
+                else
+                {
+                    Console.WriteLine($"{bandToDrop.Name} is not signed!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Band does not exist in the database.");
+            }
+            RLDatabase.DialogueRefresher();
         }
 
     }
