@@ -22,7 +22,6 @@ namespace RhythmsGonnaGetYou
         // View all the bands
         public static void ViewAllBands(RecordLabelDatabaseContext context)
         {
-            //possibly add IsBandSigned to this function
             var bands = context.Bands;
 
             foreach (var band in bands)

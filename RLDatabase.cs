@@ -4,6 +4,7 @@ namespace RhythmsGonnaGetYou
 {
     public class RLDatabase
     {
+
         public static void WelcomeMessage()
         {
             Console.Clear();
@@ -26,7 +27,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("Main Menu\n\n1. View the database\n2. Manage the database\n3. Quit the database");
+                var menuInput = PromptForInt("Main Menu\n\n1. View the database\n2. Manage the database\n3. Quit the database");
 
                 switch (menuInput)
                 {
@@ -53,7 +54,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("View Menu\n\n1. View Bands\n2. View Albums\n3. Back to the Main Menu");
+                var menuInput = PromptForInt("View Menu\n\n1. View Bands\n2. View Albums\n3. Back to the Main Menu");
 
                 switch (menuInput)
                 {
@@ -80,7 +81,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("View Bands Menu\n\n1. View all bands\n2. View all bands that are signed\n3. View all bands that are unsigned\n4. Return to the Main Menu");
+                var menuInput = PromptForInt("View Bands Menu\n\n1. View all bands\n2. View all bands that are signed\n3. View all bands that are unsigned\n4. Return to the Main Menu");
 
                 switch (menuInput)
                 {
@@ -116,7 +117,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("View Menu\n\n1. View Albums by Band Search\n2. View Albums by Release Date\n3. Back to the Main Menu");
+                var menuInput = PromptForInt("View Menu\n\n1. View Albums by Band Search\n2. View Albums by Release Date\n3. Back to the Main Menu");
 
                 switch (menuInput)
                 {
@@ -147,7 +148,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("Management Menu\n\n1. Manage Bands\n2. Manage Albums\n3. Back to the Main Menu");
+                var menuInput = PromptForInt("Management Menu\n\n1. Manage Bands\n2. Manage Albums\n3. Back to the Main Menu");
 
                 switch (menuInput)
                 {
@@ -174,7 +175,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("Manage Bands\n\n1. Add a new band\n2. Add an album for a band\n3. Re-sign a band\n4. Let a band go\n5. Back to the main menu");
+                var menuInput = PromptForInt("Manage Bands\n\n1. Add a new band\n2. Add an album for a band\n3. Re-sign a band\n4. Let a band go\n5. Back to the main menu");
 
                 switch (menuInput)
                 {
@@ -211,7 +212,7 @@ namespace RhythmsGonnaGetYou
 
             while (usingMenu)
             {
-                var menuInput = HelperFunctions.PromptForInt("Manage Albums\n\n1. Add an album for a band\n2. Add a song to an album\n3. Back to the main menu");
+                var menuInput = PromptForInt("Manage Albums\n\n1. Add an album for a band\n2. Add a song to an album\n3. Back to the main menu");
 
                 switch (menuInput)
                 {

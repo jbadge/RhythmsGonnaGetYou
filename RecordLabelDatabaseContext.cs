@@ -14,6 +14,7 @@ namespace RhythmsGonnaGetYou
         {
             optionsBuilder.UseNpgsql("server=localhost;database=RecordLabelDatabase");
 
+            // OPTIONAL LOGGING, UNCOMMENT TO ADD
             // var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             // optionsBuilder.UseLoggerFactory(loggerFactory);
         }
